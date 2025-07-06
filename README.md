@@ -1,19 +1,4 @@
-<<<<<<< HEAD
-# front-end
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 =======
 # 📒 Contact Book
 
@@ -64,4 +49,3 @@ This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) 
 ## 🚀 Як запустити
 
 
->>>>>>> 8397c79389dbbafe4290a11190756c957f886251
