@@ -1,167 +1,183 @@
-// Регулярки для перевірки
-const nameRegex = /^[А-Яа-яЁёЇїІіЄєҐґA-Za-z\s'-]*$/;
-const phoneRegex = /^\d*$/;
-const emailRegex = /^[a-zA-Z0-9._%+-]*@?gmail?\.?com?$/;
+class ContactForm {
+    constructor() {
+        // Регулярки
+        this.nameRegex = /^[А-Яа-яЁёЇїІіЄєҐґA-Za-z\s'-]*$/;
+        this.phoneRegex = /^\d*$/;
+        this.emailRegex = /^[a-zA-Z0-9._%+-]*@?gmail?\.?com?$/;
 
-// Елементи форми та помилок
-const fullNameInput = document.getElementById('fullName');
-const phoneInput = document.getElementById('phone');
-const emailInput = document.getElementById('email');
-const telegramInput = document.getElementById('telegram');
-const githubInput = document.getElementById('github');
-const discordInput = document.getElementById('discord');
-const photoUrlInput = document.getElementById('photoUrl');
-const previewImage = document.getElementById('previewImage');
-const saveBtn = document.getElementById('saveContactBtn');
+        // DOM-елементи
+        this.fullNameInput = document.getElementById('fullName');
+        this.phoneInput = document.getElementById('phone');
+        this.emailInput = document.getElementById('email');
+        this.telegramInput = document.getElementById('telegram');
+        this.githubInput = document.getElementById('github');
+        this.discordInput = document.getElementById('discord');
+        this.photoUrlInput = document.getElementById('photoUrl');
+        this.previewImage = document.getElementById('previewImage');
+        this.saveBtn = document.getElementById('saveContactBtn');
+        this.instagramInput = document.getElementById('instagram');
+        this.descriptionInput = document.getElementById('description');
 
-const fullNameError = document.getElementById('fullNameError');
-const phoneError = document.getElementById('phoneError');
-const emailError = document.getElementById('emailError');
+        this.fullNameError = document.getElementById('fullNameError');
+        this.phoneError = document.getElementById('phoneError');
+        this.emailError = document.getElementById('emailError');
 
-const instagramInput = document.getElementById('instagram');
-const descriptionInput = document.getElementById('description');
+        this.inputs = [
+            { input: this.fullNameInput, key: 'draft_fullName' },
+            { input: this.phoneInput, key: 'draft_phone' },
+            { input: this.emailInput, key: 'draft_email' },
+            { input: this.telegramInput, key: 'draft_telegram' },
+            { input: this.githubInput, key: 'draft_github' },
+            { input: this.discordInput, key: 'draft_discord' },
+            { input: this.photoUrlInput, key: 'draft_photoUrl' },
+            { input: this.instagramInput, key: 'draft_instagram' },
+            { input: this.descriptionInput, key: 'draft_description' }
+        ];
 
-
-// Масив усіх input-полів для збереження/відновлення
-const inputs = [
-    { input: fullNameInput, key: 'draft_fullName' },
-    { input: phoneInput, key: 'draft_phone' },
-    { input: emailInput, key: 'draft_email' },
-    { input: telegramInput, key: 'draft_telegram' },
-    { input: githubInput, key: 'draft_github' },
-    { input: discordInput, key: 'draft_discord' },
-    { input: photoUrlInput, key: 'draft_photoUrl' },
-    { input: instagramInput, key: 'draft_instagram' },
-    { input: descriptionInput, key: 'draft_description' }
-];
-
-// Відновлення чернеток з localStorage
-inputs.forEach(({ input, key }) => {
-    const saved = localStorage.getItem(key);
-    if (saved !== null) {
-        input.value = saved;
-    }
-});
-
-// Зберігати значення в localStorage при вводі
-inputs.forEach(({ input, key }) => {
-    input.addEventListener('input', () => {
-        localStorage.setItem(key, input.value);
-    });
-});
-
-// Показ зображення з посилання
-photoUrlInput.addEventListener('input', () => {
-    const url = photoUrlInput.value.trim();
-    if (url.match(/\.(jpeg|jpg|png|webp|gif)$/i)) {
-        previewImage.src = url;
-        previewImage.classList.remove('hidden');
-    } else {
-        previewImage.classList.add('hidden');
-    }
-});
-
-// Валідація в реальному часі для fullName
-fullNameInput.addEventListener('input', () => {
-    const value = fullNameInput.value;
-    if (!nameRegex.test(value)) {
-        fullNameError.textContent = "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
-    } else {
-        fullNameError.textContent = "";
-    }
-});
-
-// Валідація в реальному часі для phone
-phoneInput.addEventListener('input', () => {
-    const value = phoneInput.value;
-
-    if (!phoneRegex.test(value)) {
-        phoneError.textContent = "Номер телефону має містити лише цифри";
-    } else if (value.length > 0 && (value.length < 8 || value.length > 15)) {
-        phoneError.textContent = "Номер телефону має містити від 8 до 15 цифр";
-    } else {
-        phoneError.textContent = "";
-    }
-});
-
-
-// Валідація в реальному часі для email
-emailInput.addEventListener('input', () => {
-    const value = emailInput.value;
-    if (value && !/^[a-zA-Z0-9._%+-@]*$/.test(value)) {
-        emailError.textContent = "Недопустимі символи у Gmail";
-    } else {
-        emailError.textContent = "";
-    }
-});
-
-// Кнопка Зберегти контакт
-saveBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    // Очищення помилок
-    fullNameError.textContent = '';
-    phoneError.textContent = '';
-    emailError.textContent = '';
-
-    const fullName = fullNameInput.value.trim();
-    const phone = phoneInput.value.trim();
-    const email = emailInput.value.trim();
-    const telegram = telegramInput.value.trim();
-    const github = githubInput.value.trim();
-    const discord = discordInput.value.trim();
-    const photoUrl = photoUrlInput.value.trim();
-    const instagram = instagramInput.value.trim();
-    const description = descriptionInput.value.trim();
-
-
-    let hasError = false;
-
-    if (!fullName) {
-        fullNameError.textContent = "Введіть ім'я";
-        hasError = true;
-    } else if (!nameRegex.test(fullName)) {
-        fullNameError.textContent = "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
-        hasError = true;
+        this.init();
     }
 
-    if (!phone) {
-        phoneError.textContent = "Введіть номер телефону";
-        hasError = true;
-    } else if (!phoneRegex.test(phone)) {
-        phoneError.textContent = "Номер телефону має містити лише цифри";
-        hasError = true;
-    } else if (phone.length < 8 || phone.length > 15) {
-        phoneError.textContent = "Номер телефону має містити від 8 до 15 цифр";
-        hasError = true;
+    init() {
+        this.restoreDrafts();
+        this.attachEventListeners();
     }
 
-
-    // Gmail необов’язковий
-    if (email && !emailRegex.test(email)) {
-        emailError.textContent = "Введіть правильний Gmail (наприклад: example@gmail.com)";
-        hasError = true;
+    restoreDrafts() {
+        this.inputs.forEach(({ input, key }) => {
+            const saved = localStorage.getItem(key);
+            if (saved !== null) input.value = saved;
+        });
     }
 
+    attachEventListeners() {
+        this.inputs.forEach(({ input, key }) => {
+            input.addEventListener('input', () => {
+                localStorage.setItem(key, input.value);
+            });
+        });
 
-    if (hasError) return;
+        this.photoUrlInput.addEventListener('input', () => this.updatePhotoPreview());
 
-    const contact = {
-        id: Date.now().toString(),
-        fullName,
-        phone,
-        email,
-        telegram,
-        github,
-        discord,
-        photo: photoUrl,
-        instagram,
-        description
-    };
+        this.fullNameInput.addEventListener('input', () => this.validateFullName());
+        this.phoneInput.addEventListener('input', () => this.validatePhone());
+        this.emailInput.addEventListener('input', () => this.validateEmail());
 
-    // Очистити чернетки після успішного збереження
-    inputs.forEach(({ key }) => localStorage.removeItem(key));
+        this.saveBtn.addEventListener('click', (e) => this.handleSubmit(e));
+    }
 
-    addContact(contact);
-    window.location.href = "index.html";
+    updatePhotoPreview() {
+        const url = this.photoUrlInput.value.trim();
+        if (url.match(/\.(jpeg|jpg|png|webp|gif)$/i)) {
+            this.previewImage.src = url;
+            this.previewImage.classList.remove('hidden');
+        } else {
+            this.previewImage.classList.add('hidden');
+        }
+    }
+
+    validateFullName() {
+        const value = this.fullNameInput.value;
+        if (!this.nameRegex.test(value)) {
+            this.fullNameError.textContent = "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
+            return false;
+        } else {
+            this.fullNameError.textContent = "";
+            return true;
+        }
+    }
+
+    validatePhone() {
+        const value = this.phoneInput.value;
+        if (!this.phoneRegex.test(value)) {
+            this.phoneError.textContent = "Номер телефону має містити лише цифри";
+            return false;
+        } else if (value.length > 0 && (value.length < 8 || value.length > 15)) {
+            this.phoneError.textContent = "Номер телефону має містити від 8 до 15 цифр";
+            return false;
+        } else {
+            this.phoneError.textContent = "";
+            return true;
+        }
+    }
+
+    validateEmail() {
+        const value = this.emailInput.value;
+        if (value && !/^[a-zA-Z0-9._%+-@]*$/.test(value)) {
+            this.emailError.textContent = "Недопустимі символи у Gmail";
+            return false;
+        } else {
+            this.emailError.textContent = "";
+            return true;
+        }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        // Очищаємо помилки
+        this.fullNameError.textContent = '';
+        this.phoneError.textContent = '';
+        this.emailError.textContent = '';
+
+        const fullName = this.fullNameInput.value.trim();
+        const phone = this.phoneInput.value.trim();
+        const email = this.emailInput.value.trim();
+        const telegram = this.telegramInput.value.trim();
+        const github = this.githubInput.value.trim();
+        const discord = this.discordInput.value.trim();
+        const photoUrl = this.photoUrlInput.value.trim();
+        const instagram = this.instagramInput.value.trim();
+        const description = this.descriptionInput.value.trim();
+
+        let hasError = false;
+
+        if (!fullName) {
+            this.fullNameError.textContent = "Введіть ім'я";
+            hasError = true;
+        } else if (!this.nameRegex.test(fullName)) {
+            this.fullNameError.textContent = "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
+            hasError = true;
+        }
+
+        if (!phone) {
+            this.phoneError.textContent = "Введіть номер телефону";
+            hasError = true;
+        } else if (!this.phoneRegex.test(phone)) {
+            this.phoneError.textContent = "Номер телефону має містити лише цифри";
+            hasError = true;
+        } else if (phone.length < 8 || phone.length > 15) {
+            this.phoneError.textContent = "Номер телефону має містити від 8 до 15 цифр";
+            hasError = true;
+        }
+
+        if (email && !this.emailRegex.test(email)) {
+            this.emailError.textContent = "Введіть правильний Gmail (наприклад: example@gmail.com)";
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        const contact = {
+            id: Date.now().toString(),
+            fullName,
+            phone,
+            email,
+            telegram,
+            github,
+            discord,
+            photo: photoUrl,
+            instagram,
+            description
+        };
+
+        // Очистити чернетки
+        this.inputs.forEach(({ key }) => localStorage.removeItem(key));
+
+        addContact(contact);
+        window.location.href = "index.html";
+    }
+}
+
+// Ініціалізація форми після завантаження DOM
+document.addEventListener('DOMContentLoaded', () => {
+    new ContactForm();
 });
