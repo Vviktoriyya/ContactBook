@@ -45,5 +45,23 @@
 ---
 
 ## 🚀 Як запустити
+### 🧩 Клонування проєкту
+```bash
+git clone https://github.com/Vviktoriyya/ContactBook.git
+cd ContactBook
+```
 
+### 📦 Встановлення залежностей
+```bash
+npm install
+```
+
+### 🖥️ Запуск проєкту
+```bash
+npm run start
+```
+
+## 🌐 Як переглянути сайт онлайн
+Ти можеш подивитись сайт онлайн за посиланням:  
+🔗 [https://Vviktoriyya.github.io/ContactBook](https://Vviktoriyya.github.io/ContactBook)](https://wwakaww.swit.vn.ua/index.html)
 
