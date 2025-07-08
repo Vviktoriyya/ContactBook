@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link href="src/styles/output.css" rel="stylesheet">
+
+	<title>Document</title>
+
+</head>
+<body class="bg-[var(--color-myGray)]">
+
+<header>
+	<div class="flex items-center justify-center py-[15px] border-2 border-gray-400 bg-[var(--color-lightSky)] " style="background-image:linear-gradient(to right, rgba(140, 175, 222, 0.7), rgba(163, 196, 229, 0.5), rgba(140, 175, 222, 0.7)),      linear-gradient(to left, rgba(140, 175, 222, 0.7), rgba(163, 196, 229, 0.5), rgba(140, 175, 222, 0.7)),url('src/img/backgrounds/main.png');background-size: cover;background-position: center;background-repeat: no-repeat;background-blend-mode: overlay;">
+		<h1 class="text-[36px] font-Pangolin z-10">Інформація&nbsp;&nbsp;про&nbsp;&nbsp;контакт</h1>
+	</div>
+</header>
+
+<section>
+	<a href="index.html" class="cursor-pointer flex pl-[40px] pt-[40px]">
+		<img src="src/img/icons/arrow-back.png" class="w-[50px] h-[50px] hover:scale-110">
+	</a>
+</section>
+
+<section>
+	<div class="w-full flex flex-col justify-center items-center px-4 pt-[45px] pb-[80px]">
+		<div class="w-full max-w-[500px] flex flex-col">
+			<div class="pt-[10px] flex items-center justify-center gap-[20px]">
+				<div id="avatarContainer" class="rounded-full border-2 border-gray-400 bg-gray-400 flex-shrink-0 w-[70px] h-[70px] overflow-hidden flex items-center justify-center">
+					<img id="contactPhoto" src="" alt="" class="w-[70px] h-[70px] rounded-full object-cover" />
+					<!-- Якщо фото відсутнє - першу літеру сюди -->
+				</div>
+				<div>
+					<div class="flex items-center px-[10px] w-[408px] py-[2px] border-2 border-gray-400 bg-white rounded-[10px]">
+						<p id="contactFullName" class="truncate text-[25px] whitespace-nowrap overflow-hidden px-[30px] py-[10px]">Ім'я Прізвище</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex flex-col pt-[30px]">
+				<div class="flex justify-between mt-[10px] w-full bg-white rounded-[10px]">
+					<div class="flex gap-[30px] items-center px-[10px]  w-full py-[2px] border-2 border-gray-400 rounded-[10px]">
+						<div class="pr-[10px] flex items-center justify-center border-r-2 border-gray-400">
+							<img src="src/img/icons/phone.webp" class="w-[50px] h-[50px] p-[10px]" />
+						</div>
+						<p id="contactPhone">Номер Телефону</p>
+					</div>
+				</div>
+
+				<div class="flex justify-between mt-[20px]">
+					<div class="flex gap-[30px] items-center px-[10px] w-full py-[2px] border-2 border-gray-400 bg-white rounded-[10px]">
+						<div class="pr-[10px] flex items-center justify-center border-r-2 border-gray-400">
+							<img src="src/img/logos/gmail.png" class="w-[50px] h-[50px] p-[10px]" />
+						</div>
+						<p id="contactEmail">Gmail</p>
+					</div>
+				</div>
+
+				<div class="flex justify-between mt-[20px]">
+					<div class="flex gap-[30px] items-center w-full py-[2px] border-2 border-gray-400 bg-white rounded-[10px]">
+						<div class="flex items-center justify-center border-r-2 border-gray-400 pl-[20px]">
+							<img src="src/img/icons/description.png" class="w-[50px] h-[50px]" />
+						</div>
+
+						<p id="contactDescription" class="max-h-[50px] max-w-[390px] overflow-y-auto overflow-x-hidden  text-gray-800 break-words no-scrollbar">
+						</p>
+					</div>
+				</div>
+
+
+
+				<div class="flex justify-center gap-[40px] items-center pt-[20px]">
+					<img id="contactDiscord" src="src/img/logos/discord.webp" class="w-[60px] h-[60px] border-2 border-gray-400 rounded-[50px] cursor-pointer" />
+					<img id="contactTelegram" src="src/img/logos/telegram.png" class="w-[60px] h-[60px] border-2 border-gray-400 rounded-[50px] cursor-pointer" />
+					<img id="contactGitHub" src="src/img/logos/github.png" class="w-[60px] h-[60px] object-contain border-2 border-gray-400 rounded-[50px] cursor-pointer" />
+					<img id="contactInstagram" src="src/img/logos/instagram.webp" class="w-[60px] h-[60px] object-contain border-2 border-gray-400 rounded-[50px] cursor-pointer" />
+				</div>
+
+				<div class="pt-[30px]">
+					<div class="flex-grow h-[4px] bg-gray-400"></div>
+				</div>
+
+				<div class="flex justify-between pt-[40px] gap-[60px]">
+					<div class="flex justify-center cursor-pointer items-center px-[10px] w-[400px] py-[8px] border-2 border-gray-400 rounded-[10px] bg-white">
+						<a id="editContactLink" href="contactEdit.html?id=12345" class="cursor-pointer">
+							<p>Редагувати</p>
+						</a>
+					</div>
+
+					<div class="flex items-center cursor-pointer justify-center px-[10px] w-[400px] py-[8px] border-2 border-gray-400 rounded-[10px] bg-white">
+						<a id="deleteContactBtn" class="cursor-pointer">
+							<p>Видалити</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div id="deleteModal" class="fixed inset-0 flex justify-center items-center bg-[var(--color-black-transparent)] z-50 hidden">
+	<div class="flex justify-center items-center flex-col border-4 border-gray-400 bg-white rounded-[30px] py-[35px] w-[500px]">
+		<div class="flex w-[400px]">
+			<p class="text-[30px] text-center">Ви впевнені, що хочете видалити контакт?</p>
+		</div>
+		<div class="flex justify-between gap-[90px] mt-8">
+			<button id="modalDeleteBtn" class="w-[160px] py-2 bg-red-300 border-2 border-gray-400 rounded-[10px] transition-transform hover:scale-120">
+				<p class="text-[18px] text-gray-800 font-medium cursor-pointer">Видалити</p>
+			</button>
+			<button id="modalCancelBtn" class="w-[160px] py-2 bg-green-300 border-2 border-gray-400 rounded-[10px] transition-transform hover:scale-120">
+				<p class="text-[18px] text-gray-800 font-medium cursor-pointer">Скасувати</p>
+			</button>
+		</div>
+	</div>
+</div>
+
+<div id="deleteSuccess" class="fixed inset-0 flex justify-center items-center bg-[var(--color-black-transparent)] z-50 hidden">
+	<div class="flex justify-center items-center flex-col bg-white rounded-[30px] py-[35px] px-[40px] w-[400px]">
+		<p class="text-[24px] text-center text-green-600 font-semibold ">✅ Контакт видалено</p>
+	</div>
+</div>
+
+<footer>
+	<div class="flex items-center justify-center py-[15px] border-2 border-gray-400 bg-[var(--color-lightSky)] " style="background-image:linear-gradient(to right, rgba(140, 175, 222, 0.7), rgba(163, 196, 229, 0.5), rgba(140, 175, 222, 0.7)),      linear-gradient(to left, rgba(140, 175, 222, 0.7), rgba(163, 196, 229, 0.5), rgba(140, 175, 222, 0.7)),url('src/img/backgrounds/main.png');background-size: cover;background-position: center;background-repeat: no-repeat;background-blend-mode: overlay;">
+		<a href="https://github.com/Vviktoriyya">
+			<img src="src/img/logos/github.png" class="w-[50px] h-[50px] cursor-pointer" />
+		</a>
+	</div>
+</footer>
+
+<script src="src/scripts/contactInfo.js"></script>
+<script src="src/modalScripts/contactDelete.js"></script>
+
+</body>
+</html>
