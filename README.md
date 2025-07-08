@@ -63,5 +63,5 @@ npm run start
 
 ## 🌐 Як переглянути сайт онлайн
 Ти можеш подивитись сайт онлайн за посиланням:  
-🔗 [https://Vviktoriyya.github.io/ContactBook](https://Vviktoriyya.github.io/ContactBook)](https://wwakaww.swit.vn.ua/index.html)
+🔗(https://wwakaww.swit.vn.ua/index.html)
 
