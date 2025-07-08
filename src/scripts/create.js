@@ -1,45 +1,6 @@
-class ContactForm {
-    constructor() {
-        // Регулярки
-        this.nameRegex = /^[А-Яа-яЁёЇїІіЄєҐґA-Za-z\s'-]*$/;
-        this.phoneRegex = /^\d*$/;
-        this.emailRegex = /^[a-zA-Z0-9._%+-]*@?gmail?\.?com?$/;
-
-        // DOM-елементи
-        this.fullNameInput = document.getElementById('fullName');
-        this.phoneInput = document.getElementById('phone');
-        this.emailInput = document.getElementById('email');
-        this.telegramInput = document.getElementById('telegram');
-        this.githubInput = document.getElementById('github');
-        this.discordInput = document.getElementById('discord');
-        this.photoUrlInput = document.getElementById('photoUrl');
-        this.previewImage = document.getElementById('previewImage');
-        this.saveBtn = document.getElementById('saveContactBtn');
-        this.instagramInput = document.getElementById('instagram');
-        this.descriptionInput = document.getElementById('description');
-
-        this.fullNameError = document.getElementById('fullNameError');
-        this.phoneError = document.getElementById('phoneError');
-        this.emailError = document.getElementById('emailError');
-
-        this.inputs = [
-            { input: this.fullNameInput, key: 'draft_fullName' },
-            { input: this.phoneInput, key: 'draft_phone' },
-            { input: this.emailInput, key: 'draft_email' },
-            { input: this.telegramInput, key: 'draft_telegram' },
-            { input: this.githubInput, key: 'draft_github' },
-            { input: this.discordInput, key: 'draft_discord' },
-            { input: this.photoUrlInput, key: 'draft_photoUrl' },
-            { input: this.instagramInput, key: 'draft_instagram' },
-            { input: this.descriptionInput, key: 'draft_description' }
-        ];
-
-        this.init();
-    }
-
-    init() {
-        this.restoreDrafts();
-        this.attachEventListeners();
+class DraftManager {
+    constructor(inputs) {
+        this.inputs = inputs;
     }
 
     restoreDrafts() {
@@ -49,23 +10,31 @@ class ContactForm {
         });
     }
 
-    attachEventListeners() {
+    attachSaveListeners() {
         this.inputs.forEach(({ input, key }) => {
             input.addEventListener('input', () => {
                 localStorage.setItem(key, input.value);
             });
         });
-
-        this.photoUrlInput.addEventListener('input', () => this.updatePhotoPreview());
-
-        this.fullNameInput.addEventListener('input', () => this.validateFullName());
-        this.phoneInput.addEventListener('input', () => this.validatePhone());
-        this.emailInput.addEventListener('input', () => this.validateEmail());
-
-        this.saveBtn.addEventListener('click', (e) => this.handleSubmit(e));
     }
 
-    updatePhotoPreview() {
+    clearDrafts() {
+        this.inputs.forEach(({ key }) => localStorage.removeItem(key));
+    }
+}
+
+class PhotoPreviewer {
+    constructor(photoUrlInput, previewImage) {
+        this.photoUrlInput = photoUrlInput;
+        this.previewImage = previewImage;
+        this.attachListener();
+    }
+
+    attachListener() {
+        this.photoUrlInput.addEventListener('input', () => this.updatePreview());
+    }
+
+    updatePreview() {
         const url = this.photoUrlInput.value.trim();
         if (url.match(/\.(jpeg|jpg|png|webp|gif)$/i)) {
             this.previewImage.src = url;
@@ -73,6 +42,29 @@ class ContactForm {
         } else {
             this.previewImage.classList.add('hidden');
         }
+    }
+}
+
+class Validator {
+    constructor(fullNameInput, phoneInput, emailInput, fullNameError, phoneError, emailError) {
+        this.fullNameInput = fullNameInput;
+        this.phoneInput = phoneInput;
+        this.emailInput = emailInput;
+
+        this.fullNameError = fullNameError;
+        this.phoneError = phoneError;
+        this.emailError = emailError;
+
+        this.nameRegex = /^[А-Яа-яЇїІіЄєҐґA-Za-z\s'-]*$/;
+        this.phoneRegex = /^\d*$/;
+
+        this.attachListeners();
+    }
+
+    attachListeners() {
+        this.fullNameInput.addEventListener('input', () => this.validateFullName());
+        this.phoneInput.addEventListener('input', () => this.validatePhone());
+        this.emailInput.addEventListener('input', () => this.validateEmail());
     }
 
     validateFullName() {
@@ -102,7 +94,7 @@ class ContactForm {
 
     validateEmail() {
         const value = this.emailInput.value;
-        if (value && !/^[a-zA-Z0-9._%+-@]*$/.test(value)) {
+        if (value && ! /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(value)) {
             this.emailError.textContent = "Недопустимі символи у Gmail";
             return false;
         } else {
@@ -111,12 +103,65 @@ class ContactForm {
         }
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        // Очищаємо помилки
+    clearErrors() {
         this.fullNameError.textContent = '';
         this.phoneError.textContent = '';
         this.emailError.textContent = '';
+    }
+}
+
+class ContactForm {
+    constructor() {
+        this.fullNameInput = document.getElementById('fullName');
+        this.phoneInput = document.getElementById('phone');
+        this.emailInput = document.getElementById('email');
+        this.telegramInput = document.getElementById('telegram');
+        this.githubInput = document.getElementById('github');
+        this.discordInput = document.getElementById('discord');
+        this.photoUrlInput = document.getElementById('photoUrl');
+        this.previewImage = document.getElementById('previewImage');
+        this.saveBtn = document.getElementById('saveContactBtn');
+        this.instagramInput = document.getElementById('instagram');
+        this.descriptionInput = document.getElementById('description');
+
+        this.fullNameError = document.getElementById('fullNameError');
+        this.phoneError = document.getElementById('phoneError');
+        this.emailError = document.getElementById('emailError');
+
+        this.inputs = [
+            { input: this.fullNameInput, key: 'draft_fullName' },
+            { input: this.phoneInput, key: 'draft_phone' },
+            { input: this.emailInput, key: 'draft_email' },
+            { input: this.telegramInput, key: 'draft_telegram' },
+            { input: this.githubInput, key: 'draft_github' },
+            { input: this.discordInput, key: 'draft_discord' },
+            { input: this.photoUrlInput, key: 'draft_photoUrl' },
+            { input: this.instagramInput, key: 'draft_instagram' },
+            { input: this.descriptionInput, key: 'draft_description' }
+        ];
+
+        this.draftManager = new DraftManager(this.inputs);
+        this.photoPreviewer = new PhotoPreviewer(this.photoUrlInput, this.previewImage);
+        this.validator = new Validator(this.fullNameInput, this.phoneInput, this.emailInput,
+            this.fullNameError, this.phoneError, this.emailError);
+
+        this.init();
+    }
+
+    init() {
+        this.draftManager.restoreDrafts();
+        this.photoPreviewer.updatePreview();
+        this.draftManager.attachSaveListeners();
+        this.attachSubmitListener();
+    }
+
+    attachSubmitListener() {
+        this.saveBtn.addEventListener('click', (e) => this.handleSubmit(e));
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.validator.clearErrors();
 
         const fullName = this.fullNameInput.value.trim();
         const phone = this.phoneInput.value.trim();
@@ -133,24 +178,18 @@ class ContactForm {
         if (!fullName) {
             this.fullNameError.textContent = "Введіть ім'я";
             hasError = true;
-        } else if (!this.nameRegex.test(fullName)) {
-            this.fullNameError.textContent = "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
+        } else if (!this.validator.validateFullName()) {
             hasError = true;
         }
 
         if (!phone) {
             this.phoneError.textContent = "Введіть номер телефону";
             hasError = true;
-        } else if (!this.phoneRegex.test(phone)) {
-            this.phoneError.textContent = "Номер телефону має містити лише цифри";
-            hasError = true;
-        } else if (phone.length < 8 || phone.length > 15) {
-            this.phoneError.textContent = "Номер телефону має містити від 8 до 15 цифр";
+        } else if (!this.validator.validatePhone()) {
             hasError = true;
         }
 
-        if (email && !this.emailRegex.test(email)) {
-            this.emailError.textContent = "Введіть правильний Gmail (наприклад: example@gmail.com)";
+        if (email && !this.validator.validateEmail()) {
             hasError = true;
         }
 
@@ -169,15 +208,13 @@ class ContactForm {
             description
         };
 
-        // Очистити чернетки
-        this.inputs.forEach(({ key }) => localStorage.removeItem(key));
+        this.draftManager.clearDrafts();
 
         addContact(contact);
         window.location.href = "index.html";
     }
 }
 
-// Ініціалізація форми після завантаження DOM
 document.addEventListener('DOMContentLoaded', () => {
     new ContactForm();
 });

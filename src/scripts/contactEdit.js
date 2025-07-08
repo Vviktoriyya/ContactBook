@@ -9,7 +9,7 @@ const img = document.getElementById('previewImage');
 const photoInput = document.getElementById('photoInputEdit');
 
 // Регулярки для перевірки
-const nameRegex = /^[А-Яа-яЁёЇїІіЄєҐґA-Za-z\s'-]*$/;
+const nameRegex = /^[А-Яа-яЇїІіЄєҐґA-Za-z\s'-]*$/;
 const phoneRegex = /^\d+$/;
 const emailStrictRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
@@ -24,7 +24,6 @@ const fullNameError = document.getElementById('fullNameError');
 const phoneError = document.getElementById('phoneError');
 const emailError = document.getElementById('emailError');
 
-// Функції валідації окремо (повертають текст помилки або пусто)
 function validateFullName(value) {
     if (!value) return "Введіть ім'я";
     if (!nameRegex.test(value)) return "Ім'я має містити лише літери, пробіли, дефіси або апострофи";
@@ -90,7 +89,6 @@ photoInput?.addEventListener('input', () => {
     }
 });
 
-// Зберегти зміни з перевіркою
 document.querySelector('button').addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -105,7 +103,6 @@ document.querySelector('button').addEventListener('click', (e) => {
     const descriptionVal = descriptionInput.value.trim();
 
 
-    // Перевірки і вивід помилок
     const fullNameErr = validateFullName(fullNameVal);
     const phoneErr = validatePhone(phoneVal);
     const emailErr = validateEmail(emailVal);
@@ -135,7 +132,6 @@ document.querySelector('button').addEventListener('click', (e) => {
     if (index !== -1) {
         contacts[index] = updatedContact;
         localStorage.setItem('contacts', JSON.stringify(contacts));
-        // Можна показати повідомлення успіху (зелений текст)
         window.location.href = 'contactInfo.html?id=' + contactId;
     } else {
         fullNameError.textContent = "Контакт не знайдено для оновлення";

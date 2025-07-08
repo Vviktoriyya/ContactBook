@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const contactId = getQueryParam('id');
     if (!contactId) {
-        alert('Контакт не знайдено');
         window.location.href = 'index.html';
         return;
     }
@@ -19,12 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const contact = contacts.find(c => c.id === contactId);
 
     if (!contact) {
-        alert('Контакт не знайдено');
         window.location.href = 'index.html';
         return;
     }
 
-    // Заповнюємо поля
     const photoEl = document.getElementById('contactPhoto');
     const avatarContainer = document.getElementById('avatarContainer');
     const fullNameEl = document.getElementById('contactFullName');
@@ -38,13 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteBtn = document.getElementById('deleteContactBtn');
     const descriptionEl = document.getElementById('contactDescription');
 
-
-
     fullNameEl.textContent = contact.fullName || 'Без імені';
     phoneEl.textContent = contact.phone || 'Номер телефону не вказаний';
     emailEl.textContent = contact.email || 'Gmail не вказаний';
     descriptionEl.textContent = contact.description || 'Опис не вказаний';
-
 
 
     if (contact.photo) {
@@ -82,23 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editLink.href = `contactEdit.html?id=${contact.id}`;
 
-    // Логіка для модалки видалення
+    //модалка видалення
     const deleteModal = document.getElementById('deleteModal');
     const modalDeleteBtn = document.getElementById('modalDeleteBtn');
     const modalCancelBtn = document.getElementById('modalCancelBtn');
     const deleteSuccess = document.getElementById('deleteSuccess');
 
-    // Відкриваємо модалку при кліку на кнопку видалення
     deleteBtn.addEventListener('click', () => {
         deleteModal.classList.remove('hidden');
     });
 
-    // Закриваємо модалку при скасуванні
     modalCancelBtn.addEventListener('click', () => {
         deleteModal.classList.add('hidden');
     });
 
-    // Видаляємо контакт при підтвердженні
     modalDeleteBtn.addEventListener('click', () => {
         const index = contacts.findIndex(c => c.id === contactId);
         if (index !== -1) {
@@ -111,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             deleteSuccess.classList.add('hidden');
-            window.location.href = 'index.html'; // Переходимо на головну після видалення
+            window.location.href = 'index.html';
         }, 2000);
     });
 });
