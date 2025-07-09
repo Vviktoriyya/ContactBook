@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Pangolin&display=swap');
+@import 'tailwindcss';
+
+:root {
+	--color-myGray: #ebeef6;
+	--color-lavanda: #8f96d6;
+	--color-lightLavanda: #a3b6e3;
+	--color-lightSky: #a3c4e5;
+	--color-sky: #8cafde;
+	--color-black-transparent: rgba(0, 0, 0, 0.5);
+}
+
+body {
+	font-family: 'Pangolin', cursive;
+	font-weight: 400;
+	font-style: normal;
+}
+
+* {
+	transition: all 0.3s ease-in-out;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+@media (max-width: 900px) {
+	.flex-responsive {
+		flex-direction: column;
+	}
+}
+
+@keyframes fade-in-out {
+	0% { opacity: 0; transform: translateY(10px); }
+	10% { opacity: 1; transform: translateY(0); }
+	90% { opacity: 1; transform: translateY(0); }
+	100% { opacity: 0; transform: translateY(-10px); }
+}
+.animate-fade-in-out {
+	animation: fade-in-out 3s ease-in-out forwards;
+}
